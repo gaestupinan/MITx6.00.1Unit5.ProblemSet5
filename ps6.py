@@ -114,6 +114,8 @@ class Message(object):
             for i in standarduppercase:
                 extendeduppercase += i
         # Until here there are two string, each contaning an duplicated alphabet
+        for i in range(26):
+            
                 
             
 
