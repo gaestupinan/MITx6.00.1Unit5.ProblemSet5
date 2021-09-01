@@ -102,7 +102,9 @@ class Message(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        self.shift = shift
+         self.shift = shift
+        contador1 = shift
+        contador2 = shift
         extendedlowercase = ""
         standardlowercase = string.ascii_lowercase
         for a in range(2):
@@ -114,7 +116,16 @@ class Message(object):
             for i in standarduppercase:
                 extendeduppercase += i
         # Until here there are two string, each contaning an duplicated alphabet
-        for i in range(26):
+        cipherdict = {}
+        for i in standardlowercase:
+            cipherdict[i]=extendedlowercase[contador1]
+            contador1 += 1
+        #This for loop creates the shifted version of the alphabet in lowercase
+        for i in standarduppercase:
+            cipherdict[i]=extendeduppercase[contador2]
+            contador2 += 1
+        return cipherdict
+        #This second loop adds the shifted version of the alphabet in upper case
             
                 
             
@@ -131,7 +142,20 @@ class Message(object):
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        pass #delete this line and replace with your code here
+        #First lets create a copy of the text
+        copymessage = self.message_text[:]
+        #Call the function to have the shifted dictionary
+        basedict = self.build_shift_dict(shift)
+        #Build empty string to put the new word in it
+        newMessage = ""
+        #iterate over the text and assign the letter its ciphered equivalent 
+        for i in copymessage:
+            #Numbers, spaces and special characters must not be ciphered
+            if i in string.punctuation or i == " " or i in string.digits: 
+                newMessage += i
+            else:
+                newMessage += basedict[i]
+        return newMessage
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
