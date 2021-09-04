@@ -235,7 +235,7 @@ class CiphertextMessage(Message):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        Message.__init__(self, text)
 
     def decrypt_message(self):
         '''
@@ -253,14 +253,34 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        pass #delete this line and replace with your code here
-
-#Example test case (PlaintextMessage)
-plaintext = PlaintextMessage('hello', 2)
-print('Expected Output: jgnnq')
-print('Actual Output:', plaintext.get_message_text_encrypted())
-    
-#Example test case (CiphertextMessage)
-ciphertext = CiphertextMessage('jgnnq')
-print('Expected Output:', (24, 'hello'))
-print('Actual Output:', ciphertext.decrypt_message())
+        #Call self.message_text (it's going to be encrypted)
+        #Create two empty tuple bestShift = ()
+        bestShift = 0
+        #Contador = 0
+        contador = 0
+        #CountValidWords = 0
+        countValidWords = 0
+        #PrevValidWords = 0
+        PrevValidWords = 0
+        best_message = ""
+        #Bucle 26 times:
+        for i in range(26):
+            #apply shift n+1 to self.message_text
+            newText = self.apply_shift(contador)
+            #Crear lista de palabras en self.message_text (lista = self.message_text.split())
+            listOfWords = newText.split(" ")
+            #Iterate over the list a count the valid words as follows: is_word(word_list, iteration)
+            for a in listOfWords:
+                #If is_word == True then CountValidWords +1
+                if is_word(self.valid_words, a):
+                    countValidWords += 1
+            #If CountValidWords > PrevValidWords THEN PrevValidWords = CountValidWords and bestShift = (prevValidWords,self.message_text(shift) )
+            if countValidWords > PrevValidWords:
+                PrevValidWords = countValidWords
+                bestShift = contador
+                best_message = newText
+            #Reset CountValidWords = 0
+            countValidWords = 0
+            #Increase contador +1
+            contador += 1
+        return (bestShift, best_message)
